@@ -47,11 +47,7 @@ resource "aws_instance" "foo" {
     device_index         = 0
   }
   
-  provisioner "local-exec" {
-    command = "printf '%s\n' 2a '${self.public_ip} ansible_user=administrator' . x | ex aws_hosts"
-     #"printf '\n${self.public_ip}' >> aws_hosts"
-     
-  }
+
 }
 
 resource "aws_internet_gateway" "mtc_internet_gateway" {
