@@ -4,6 +4,16 @@ terraform {
       source = "hashicorp/aws"
     }
   }
+  
+  
+  
+   backend "s3" {
+    bucket = "tfs3-syed"
+    key    = "states/windows11.tfstate"
+    region = "us-west-1"
+    dynamodb_table = "tfs3-syed"
+  }
+
 }
 
 provider "aws" {
