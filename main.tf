@@ -47,3 +47,47 @@ resource "aws_instance" "foo" {
     device_index         = 0
   }
 }
+
+resource "aws_internet_gateway" "mtc_internet_gateway" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  tags = {
+    Name = "my_vpc_igw"
+  }
+}
+
+resource "aws_route_table" "mtc_public_rt" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  tags = {
+    Name = "mtc-public"
+  }
+}
+
+
+resource "aws_route" "default_route" {
+  route_table_id         = aws_route_table.mtc_public_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.mtc_internet_gateway.id
+}
+
+resource "aws_default_route_table" "mtc_private_rt" {
+  default_route_table_id = aws_vpc.my_vpc.default_route_table_id
+
+  tags = {
+    Name = "mtc_private"
+  }
+}
+
+
+resource "aws_subnet" "mtc_public_subnet" {
+  count                   = length(local.azs)
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = 172.16.11.100/24
+  map_public_ip_on_launch = true
+  availability_zone       = us-west-1a
+
+  tags = {
+    Name = "mtc_public_${count.index + 1}"
+  }
+}
