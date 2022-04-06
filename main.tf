@@ -85,7 +85,7 @@ resource "aws_subnet" "mtc_public_subnet" {
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = "172.16.11.100/24"
   map_public_ip_on_launch = true
-  availability_zone       = us-west-1a
+  availability_zone       = "us-west-1a"
 
   tags = {
     Name = "mtc_public_${count.index + 1}"
