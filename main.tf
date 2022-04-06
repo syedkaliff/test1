@@ -47,7 +47,9 @@ resource "aws_instance" "foo" {
     device_index         = 0
   }
   
-
+tags = {
+    Name = "mtc-main01"
+  }
 }
 
 resource "aws_internet_gateway" "mtc_internet_gateway" {
