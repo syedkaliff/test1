@@ -93,3 +93,8 @@ resource "aws_subnet" "mtc_public_subnet" {
     Name = "mtc_public_${count.index + 1}"
   }
 }
+
+
+output "hostnames" {
+value = { for i in aws_instance.foo[*]: i.public_ip =>  "               hostname=${ i.tags.Name} "  }
+}
