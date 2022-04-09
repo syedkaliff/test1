@@ -51,11 +51,20 @@ resource "aws_network_interface" "foo" {
 resource "aws_instance" "foo" {
   ami           = "ami-04a50faf2a2ec1901" # us-west-1
   instance_type = "t2.micro"
+  
 
   network_interface {
     network_interface_id = aws_network_interface.foo.id
     device_index         = 0
   }
+  
+  user_data = <<EOF
+<powershell>
+$admin = [adsi]("WinNT://./administrator, user")
+$admin.PSBase.Invoke("SetPassword", "myTempPassword123!")
+Invoke-Expression ((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+</powershell>
+EOF
   
 tags = {
     Name = "mtc-main01"
