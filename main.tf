@@ -40,7 +40,7 @@ resource "aws_subnet" "my_subnet" {
 }
 
 resource "aws_network_interface" "foo" {
-  subnet_id   = aws_subnet.mtc_public_subnet.id
+  subnet_id   = aws_subnet.mtc_public_subnet[0].id
   private_ips = ["172.16.11.100"]
 
   tags = {
